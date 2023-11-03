@@ -1,8 +1,31 @@
 import Image from 'next/image'
 import { Box, Button, Typography, styled, alpha, InputBase, Grid } from '@mui/material'
 import SearchHome from './SearchHome'
+import client from '@/Client'
+import { gql } from '@apollo/client'
+import Link from 'next/link'
 
-export default function Home() {
+async function getFacultiesData() {
+
+  const { data } = await client.query({
+    query: gql`
+    query FindManyFaculty {
+        findManyFaculty {
+          id
+          name
+        }
+      }`
+  })
+
+  return data.findManyFaculty as {
+    id: number;
+    name: string;
+  }[]
+
+}
+
+export default async function Home() {
+  const data = await getFacultiesData();
   return (
     <Box style={{
       minWidth: "100vw",
@@ -49,15 +72,17 @@ export default function Home() {
         gap: 2,
         mx: "auto",
       }}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((fac) => {
+        {data?.map((fac) => {
           return (
-            <Button variant="contained">
-              Fakultas {fac}
+            <Link href={'/search?faculty_id=' + fac.id}>
+            <Button key={fac.id} variant="contained" >
+              {fac.name}
             </Button>
-          )
+            </Link>
+      )
         })}
-      </Box>
-
     </Box>
+
+    </Box >
   )
 }

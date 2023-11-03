@@ -3,6 +3,7 @@ import React from 'react'
 import UserProfileGrid from '../UserProfileGrid'
 
 export default function Page() {
+
     return (
         <Box>
             <Box style={{
