@@ -1,6 +1,7 @@
 import { Typography, Grid, Card, Avatar, CardContent, Box } from '@mui/material';
 import React from 'react';
 import CheckboxList from './FilterList';
+import SearchProfile from '@/SearchProfile';
 
 export default function UserProfileGrid() {
 
@@ -20,6 +21,9 @@ export default function UserProfileGrid() {
             p: 4,
             px: 8
         }}>
+
+
+            <SearchProfile />
             <Typography sx={{
                 my: 2
             }} variant="body1">Search result found <span style={{

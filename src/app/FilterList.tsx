@@ -8,7 +8,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import CommentIcon from '@mui/icons-material/Comment';
-import { Paper, Typography } from '@mui/material';
+import { Divider, Paper, Typography } from '@mui/material';
 
 export default function CheckboxList() {
     const [checked, setChecked] = React.useState([0]);
@@ -30,15 +30,15 @@ export default function CheckboxList() {
         <Paper>
 
             <Typography
-                variant='body1'
-
+                variant='h6'
                 sx={{
                     p: 2,
                     fontWeight: "bold",
                 }}>
-                <h1>Filter</h1>
+                Filter
             </Typography>
 
+                <Divider/>
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 {[0, 1, 2, 3].map((value) => {
                     const labelId = `checkbox-list-label-${value}`;
