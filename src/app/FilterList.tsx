@@ -9,13 +9,34 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Divider, Paper, Typography } from '@mui/material';
+import { gql, useQuery } from '@apollo/client';
+import client from '@/Client';
+import useFilterStore from '@/stores/filter';
+
+
+
 
 export default function CheckboxList() {
-    const [checked, setChecked] = React.useState([0]);
+
+    const [faculties, setFaculties] = React.useState<{id: string, name:string}[]>([])
+    const {
+        selected,
+        setSelected
+    } = useFilterStore();
+    React.useEffect(()=>{
+        client.query({
+            query: gql`query FindManyFaculty {
+                findManyFaculty {
+                  id
+                  name
+                }
+              }`
+        }).then(({data}) => setFaculties(data.findManyFaculty))
+    },[])
 
     const handleToggle = (value: number) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
+        const currentIndex = selected.indexOf(value);
+        const newChecked = [...selected];
 
         if (currentIndex === -1) {
             newChecked.push(value);
@@ -23,7 +44,8 @@ export default function CheckboxList() {
             newChecked.splice(currentIndex, 1);
         }
 
-        setChecked(newChecked);
+        setSelected(newChecked);
+
     };
 
     return (
@@ -38,14 +60,14 @@ export default function CheckboxList() {
                 Filter
             </Typography>
 
-                <Divider/>
-            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                {[0, 1, 2, 3].map((value) => {
-                    const labelId = `checkbox-list-label-${value}`;
+            <Divider />
+            <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                {faculties?.map((faculty) => {
+                    const labelId = `checkbox-list-label-${faculty.id}` as string;
 
                     return (
                         <ListItem
-                            key={value}
+                            key={faculty.id}
                             secondaryAction={
                                 <IconButton edge="end" aria-label="comments">
                                     <CommentIcon />
@@ -53,17 +75,17 @@ export default function CheckboxList() {
                             }
                             disablePadding
                         >
-                            <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
+                            <ListItemButton role={undefined} onClick={handleToggle(Number(faculty.id))} dense>
                                 <ListItemIcon>
                                     <Checkbox
                                         edge="start"
-                                        checked={checked.indexOf(value) !== -1}
+                                        checked={selected.indexOf(Number(faculty.id)) !== -1}
                                         tabIndex={-1}
                                         disableRipple
                                         inputProps={{ 'aria-labelledby': labelId }}
                                     />
                                 </ListItemIcon>
-                                <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+                                <ListItemText id={labelId} primary={faculty.name} />
                             </ListItemButton>
                         </ListItem>
                     );

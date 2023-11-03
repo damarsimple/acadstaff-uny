@@ -6,8 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import DirectionsIcon from '@mui/icons-material/Directions';
+import useFilterStore from './stores/filter';
 
 export default function SearchProfile() {
+
+  const { search, setSearch } = useFilterStore();
+
   return (
     <Paper
       component="form"
@@ -17,6 +21,8 @@ export default function SearchProfile() {
         sx={{ ml: 1, flex: 1 }}
         placeholder="Search by Name / Publication / Expertise"
         inputProps={{ 'aria-label': 'search' }}
+        value={search}
+        onChange={e => setSearch(e.target.value)}
       />
       <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
         <SearchIcon />

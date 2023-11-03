@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Language } from '@mui/icons-material';
 import { MenuItem, Menu } from '@mui/material';
+import Link from 'next/link';
 
 
 
@@ -33,7 +34,11 @@ export default function Navbar() {
         display: "flex",
         justifyContent: "space-between"
       }}>
-        <Box display="flex">
+
+        <Link href={'/'}> <Box display="flex" sx={{
+          color:"white",
+          textDecoration:"none"
+        }}>
           <IconButton
             size="large"
             edge="start"
@@ -71,7 +76,7 @@ export default function Navbar() {
               Academic Staff Expertise
             </Typography>
           </Box>
-        </Box>
+        </Box></Link>
         <div>
           <IconButton
             size="large"

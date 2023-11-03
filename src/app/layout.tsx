@@ -17,6 +17,7 @@ import React from 'react'
 import Navbar from './Navbar';
 import { Box, Grid, Link, Paper, ThemeProvider, Typography, createTheme, makeStyles } from '@mui/material';
 import { themeOptions } from './theme';
+import { ApolloProvider } from '@apollo/client';
 
 export default function Layout({
   children,

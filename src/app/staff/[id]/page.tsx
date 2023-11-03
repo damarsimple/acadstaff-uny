@@ -99,7 +99,6 @@ async function getStaffData(email: string) {
       },
     },
   });
-  console.log(email, data);
   return data.findUniqueAcademicStaff;
 }
 
