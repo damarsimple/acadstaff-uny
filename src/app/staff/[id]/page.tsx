@@ -1,6 +1,7 @@
 import BottomProfileInfo from "@/BottomProfileInfo";
 import client from "@/Client";
 import Container from "@/components/base/Container";
+import WrapperAvatar from "@/components/base/wrapper/WrapperAvatar";
 import { gql } from "@apollo/client";
 import {
   Email,
@@ -103,7 +104,7 @@ async function getStaffData(email: string) {
 }
 
 export default async function Page({ params }: any) {
-  const staff = await getStaffData(params.id);
+  // const staff = await getStaffData(params.id);
 
   return (
     <Box
@@ -171,89 +172,100 @@ export default async function Page({ params }: any) {
             gap: 2,
           }}
         >
-          <Avatar
-            src={staff.profile_image_url ?? "/bg.jpeg"}
-            sx={{
-              width: 160,
-              height: 160,
-            }}
-          />
+          <WrapperAvatar>
+            <Avatar
+              src={"/bg.jpeg"}
+              sx={{
+                width: 160,
+                height: 160,
+              }}
+            />
+          </WrapperAvatar>
 
           <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
-              width: "70%",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
             }}
           >
-            <Typography variant="h6">{staff.name}</Typography>
-            <Typography variant="caption">
-              {staff.group}/{staff.expertise}
-            </Typography>
-            <Box mt={2} />
             <Box
               sx={{
                 display: "flex",
-                alignItems: "center",
-                gap: 1,
+                flexDirection: "column",
+                width: "70%",
               }}
             >
-              <LocalPostOffice />
-              <Typography>{staff.faculty.name}</Typography>
+              {/* <Typography variant="h6">{staff.name}</Typography> */}
+              <Typography variant="caption">
+                {/* {staff.group}/{staff.expertise} */}
+              </Typography>
+              <Box mt={2} />
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                <LocalPostOffice />
+                {/* <Typography>{staff.faculty.name}</Typography> */}
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                <Place />
+                {/* <Typography>{staff.pyshical_address}</Typography> */}
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                <LinkOutlined />
+                <Typography>www.com</Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                <EmailSharp />
+                {/* <Typography>{staff.email}</Typography> */}
+              </Box>
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <Place />
-              <Typography>{staff.pyshical_address}</Typography>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <LinkOutlined />
-              <Typography>www.com</Typography>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <EmailSharp />
-              <Typography>{staff.email}</Typography>
-            </Box>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              width: "30%",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="h4">REACH US OUT!</Typography>
 
             <Box
               sx={{
                 display: "flex",
+                flexDirection: "column",
                 gap: 2,
+                width: "30%",
+                alignItems: "center",
               }}
             >
-              <Facebook />
-              <Instagram />
-              <YouTube />
-              <LinkedIn />
+              <Typography variant="h4">REACH US OUT!</Typography>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                }}
+              >
+                <Facebook />
+                <Instagram />
+                <YouTube />
+                <LinkedIn />
+              </Box>
             </Box>
           </Box>
         </Paper>

@@ -1,6 +1,7 @@
 "use client";
 import { Box, Button, Divider, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
+import WrapperTab from "./components/base/wrapper/WrapperTab";
 
 export default function BottomProfileInfo() {
   const [selectedTab, setSelectedTab] = useState("Profile");
@@ -12,13 +13,7 @@ export default function BottomProfileInfo() {
         gap: 2,
       }}
     >
-      <Paper
-        sx={{
-          display: "flex",
-          gap: 1,
-          p: 2,
-        }}
-      >
+      <WrapperTab>
         {[
           "Profile",
           "Course & Supervision",
@@ -36,7 +31,7 @@ export default function BottomProfileInfo() {
             {tab}
           </Button>
         ))}
-      </Paper>
+      </WrapperTab>
 
       {selectedTab == "Profile" && (
         <>
