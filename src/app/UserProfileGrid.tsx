@@ -95,7 +95,7 @@ export default function UserProfileGrid() {
                 <Grid item xs={8}>
                     <Grid container spacing={1}>
                         {staffs.map((user, index) => (
-                            <Grid item xs={12} sm={6} md={4} key={index}>
+                            <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
                                 <Card
                                     onClick={() => {
                                         window.location.replace("/staff/" + user.email)
