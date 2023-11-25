@@ -23,21 +23,55 @@ import {
   Typography,
   styled,
 } from "@mui/material";
+import { Metadata, ResolvingMetadata } from "next";
 import { useParams } from "next/navigation";
 import React from "react";
+import QRCode from "react-qr-code";
 
+
+type Props = {
+  params: { id: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+ 
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const id = params.id
+  const staff = await getStaffData(params.id);
+ 
+  return {
+    title:  `${staff.name} | ${staff.faculty.name} | Universitas Negeri Yogyakarta`,
+    description: staff.description ?? "Discover the dedicated faculty of Universitas Negeri Yogyakarta. Explore profiles, research interests, academic achievements, and ways to connect with our academic staff.",
+    keywords : "Universitas Negeri Yogyakarta Faculty, Academic Staff Profiles, Faculty Research Interests, Academic Publications, Educational Expertise, Faculty Contact Information, Research and Scholarly Work, Academic Certifications and Courses",
+    robots: "index, follow",
+
+    openGraph: {
+      images: [staff.profile_image_url],
+      type: "profile",
+    },
+  
+  }
+}
+ 
 async function getStaffData(email: string) {
   "use server";
+  try {
 
-  const { data } = await client.query({
-    query: gql`
+    const { data } = await client.query({
+      query: gql`
       query FindUniqueAcademicStaff($where: AcademicStaffWhereUniqueInput!) {
         findUniqueAcademicStaff(where: $where) {
           id
           name
           photo
+          description
           physical_address
+          expertise
           position
+          educations
           profile_image_url
           status
           unit
@@ -71,10 +105,7 @@ async function getStaffData(email: string) {
           email
           dob
           description
-          educations {
-            id
-            name
-          }
+    
           courses {
             id
             name
@@ -92,14 +123,18 @@ async function getStaffData(email: string) {
         }
       }
     `,
-
-    variables: {
-      where: {
-        email: decodeURIComponent(email),
+  fetchPolicy: "no-cache",
+      variables: {
+        where: {
+          email: decodeURIComponent(email),
+        },
       },
-    },
-  });
-  return data.findUniqueAcademicStaff;
+    });
+    return data.findUniqueAcademicStaff;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 export default async function Page({ params }: any) {
@@ -165,9 +200,21 @@ export default async function Page({ params }: any) {
       <Container>
         <Paper
           sx={{
-            height: 200,
+            height: {
+              sm: 200,
+              xs: 420,
+            },
             p: 2,
             display: "flex",
+            // justifyContent: "center",
+            alignItems: {
+              xs: "center",
+              small: "normal"
+            },
+            flexDirection: {
+              sm: "row",
+              xs: "column"
+            },
             gap: 2,
           }}
         >
@@ -183,10 +230,13 @@ export default async function Page({ params }: any) {
             sx={{
               display: "flex",
               flexDirection: "column",
-              width: "70%",
+              width: {
+                xs: "100%",
+                sm: "70%",
+              }
             }}
           >
-            <Typography variant="h6">{staff.name}</Typography>
+            <Typography variant="h6" component="h1">{staff.name}</Typography>
             <Typography variant="caption">
               {staff.group}/{staff.expertise}
             </Typography>
@@ -235,15 +285,50 @@ export default async function Page({ params }: any) {
 
           <Box
             sx={{
-              display: "flex",
+              display: {
+                xs: "none",
+                sm: "flex",
+              },
               flexDirection: "column",
               gap: 2,
               width: "30%",
               alignItems: "center",
+
             }}
           >
-            <Typography variant="h4">REACH US OUT!</Typography>
 
+            <QRCode
+              size={256}
+              style={{ height: 100, maxWidth: "100%", width: "100%" }}
+              value={"123"}
+              viewBox={`0 0 256 256`}
+            />
+
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+              }}
+            >
+              <Facebook />
+              <Instagram />
+              <YouTube />
+              <LinkedIn />
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              display: {
+                xs: "flex",
+                sm: "none",
+              },
+              flexDirection: "column",
+              gap: 2,
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
             <Box
               sx={{
                 display: "flex",
@@ -258,7 +343,9 @@ export default async function Page({ params }: any) {
           </Box>
         </Paper>
         <Box mt={4} />
-        <BottomProfileInfo />
+        <BottomProfileInfo
+          staff={staff}
+        />
       </Container>
     </Box>
   );

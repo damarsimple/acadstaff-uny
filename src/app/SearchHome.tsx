@@ -22,6 +22,7 @@ const Search = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
+    backgroundColor: "#d3d3d3",
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
@@ -58,7 +59,7 @@ export default function SearchHome() {
                     name="name"
                     required
                     placeholder="Search…"
-                    inputProps={{ 'aria-label': 'search' }}
+                    inputProps={{ 'aria-label': 'sea`rch' }}
                 />
             </Search>
         </form>

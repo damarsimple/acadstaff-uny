@@ -15,10 +15,10 @@ export const metadata: Metadata = {
 
 import React from 'react'
 import Navbar from './Navbar';
-import { Box, Grid, Link, Paper, ThemeProvider, Typography, createTheme, makeStyles } from '@mui/material';
+import { Box, Divider, Grid, Link, Paper, ThemeProvider, Typography, createTheme, makeStyles } from '@mui/material';
 import { themeOptions } from './theme';
 import { ApolloProvider } from '@apollo/client';
-
+import Image from 'next/image';
 export default function Layout({
   children,
 }: {
@@ -49,59 +49,217 @@ export default function Layout({
 
 
 
+
+
+
+
+
 const FooterComponent = () => {
 
   return (
     <Box sx={{
-      // center
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
+      display: "flex",
+      gap: 2,
+      justifyContent: "space-between"
     }}>
-      <Box p={3} >
-        <Box
-          // transparent
+      <Box sx={{
+        // center
+        display: 'flex',
+      }}>
+        <Box p={3} >
+          <Box
+            // transparent
 
 
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 2,
-            maxWidth: {
-              sm: undefined,
-              md: "50vw",
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 2,
+              maxWidth: {
+                sm: undefined,
+                md: "50vw",
 
-            },
+              },
 
 
+            }}>
+            <Link href="https://www.kemdikbud.go.id/">
+              <Image alt="kemdikbud" src="https://uny.ac.id/sites/default/files/inline-images/logo-kemdikbud_0_0.png" height={71} width={71} />
+            </Link>
+            <Link href="https://www.uny.ac.id/">
+              <Image alt="universitas negeri yogyakarta" src="https://uny.ac.id/sites/default/files/inline-images/LOGO%20%281%29.png" height="68" width="67" />
+            </Link>
+            <Link href="https://kampusmerdeka.kemdikbud.go.id/">
+              <Image alt="kampus merdeka" src="https://uny.ac.id/sites/default/files/inline-images/kampus%20merdeka%20kecil_0.png" height="66" width="124" />
+            </Link>
+          </Box>
+
+          <Box sx={{
+            marginTop: "1rem",
           }}>
-          <Link href="https://www.kemdikbud.go.id/">
-            <img alt="kemdikbud" src="https://uny.ac.id/sites/default/files/inline-images/logo-kemdikbud_0_0.png" height="71" width="71" />
-          </Link>
-          <Link href="https://www.uny.ac.id/">
-            <img alt="universitas negeri yogyakarta" src="https://uny.ac.id/sites/default/files/inline-images/LOGO%20%281%29.png" height="68" width="67" />
-          </Link>
-          <Link href="https://kampusmerdeka.kemdikbud.go.id/">
-            <img alt="kampus merdeka" src="https://uny.ac.id/sites/default/files/inline-images/kampus%20merdeka%20kecil_0.png" height="66" width="124" />
-          </Link>
-          <Link href="https://kedaireka.id/">
-            <img alt="kedaireka" src="https://uny.ac.id/sites/default/files/inline-images/kedaireka%20ok.png" height="67" width="130" />
-          </Link>
-        </Box>
+            <Typography variant="h6" component="strong">UNIVERSITAS NEGERI YOGYAKARTA</Typography>
+            <Typography>Jl. Colombo No.1 Karangmalang Yogyakarta 55281</Typography>
+            <Typography>Telp : 0274-586168 | +62274542185</Typography>
+            <Typography>Email : rksiu@uny.ac.id</Typography>
+          </Box>
 
-        <Box sx={{
-          marginTop: "1rem",
-        }}>
-          <Typography variant="h6" component="strong">UNIVERSITAS NEGERI YOGYAKARTA</Typography>
-          <Typography>Jl. Colombo No.1 Karangmalang Yogyakarta 55281</Typography>
-          <Typography>Telp : 0274-586168 | +62274542185</Typography>
-          <Typography>Email : rksiu@uny.ac.id</Typography>
+          <Typography mt={2} variant="caption" >
+            Copyright © {new Date().getFullYear()} TIM WEBSITE RKSIU UNY.
+          </Typography>
         </Box>
+      </Box>
+      <Box sx={{
+        p: 4,
+        textDecoration: "none"
+      }}>
 
-        <Typography mt={2} >
-          Jam Kerja : Senin - Kamis 07.30 - 16.00 WIB | Jum`at 07.30 - 14.30 WIB
+        <Typography>
+          <Typography variant="h6" fontWeight="bold" gutterBottom>
+            <Link href="http://fipp.uny.ac.id" color="inherit">TENTANG</Link>
+          </Typography>
         </Typography>
+
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://uny.ac.id/" color="inherit">Profil UNY</Link>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://uny.ac.id/" color="inherit">Visi & Misi</Link>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://uny.ac.id/" color="inherit">Sambutan Rektor</Link>
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+    
+      <Box sx={{
+        p: 4,
+        textDecoration: "none"
+      }}>
+
+        <Typography>
+          <Typography variant="h6" fontWeight="bold" gutterBottom>
+            <Link href="http://fipp.uny.ac.id" color="inherit">FAKULTAS</Link>
+          </Typography>
+        </Typography>
+
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://fk.uny.ac.id" color="inherit">Fakultas Kedokteran</Link>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://fipp.uny.ac.id" color="inherit">Fakultas Ilmu Pendidikan dan Psikologi</Link>
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://fmipa.uny.ac.id" color="inherit">Fakultas Matematika dan Ilmu Pengetahuan Alam</Link>
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://fbsb.uny.ac.id/" color="inherit">Fakultas Bahasa, Seni dan Budaya</Link>
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://fishipol.uny.ac.id/" color="inherit">Fakultas Ilmu Sosial, Hukum dan Ilmu Politik</Link>
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://ft.uny.ac.id" color="inherit">Fakultas Teknik</Link>
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://fikk.uny.ac.id" color="inherit">Fakultas Ilmu Keolahragaan dan Kesehatan</Link>
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://feb.uny.ac.id/" color="inherit">Fakultas Ekonomi dan Bisnis</Link>
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://uny.ac.id/" color="inherit">Fakultas Vokasi</Link>
+            </Typography>
+          </Grid>
+
+        </Grid>
+      </Box>
+      <Box sx={{
+        p: 4,
+        textDecoration: "none"
+      }}>
+
+        <Typography>
+          <Typography variant="h6" fontWeight="bold" gutterBottom>
+            <Link href="http://fipp.uny.ac.id" color="inherit">Direktorat</Link>
+          </Typography>
+        </Typography>
+
+        <Grid container spacing={2} justifyContent="center">
+          
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://uny.ac.id/" color="inherit">Direktorat Penjaminan Mutu</Link>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://uny.ac.id/" color="inherit">Direktorat Akademik, Kemahasiswaan, dan Alumni</Link>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://uny.ac.id/" color="inherit">Direktorat Riset dan Pengabdian kepada Masyarakat</Link>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://uny.ac.id/" color="inherit">Direktorat Umum, Sumber Daya, dan Hukum</Link>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://uny.ac.id/" color="inherit">Direktorat Kerja Sama, Sistem Informasi, Inovasi, dan Usaha</Link>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://uny.ac.id/" color="inherit">Direktorat Pendidikan Profesi dan Kompetensi</Link>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://uny.ac.id/" color="inherit">Direktorat Perencanaan dan Keuangan</Link>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              <Link href="http://uny.ac.id/" color="inherit">Direktorat Kemahasiswaan</Link>
+            </Typography>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );

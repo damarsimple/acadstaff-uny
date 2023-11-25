@@ -18,22 +18,23 @@ import useFilterStore from '@/stores/filter';
 
 export default function CheckboxList() {
 
-    const [faculties, setFaculties] = React.useState<{id: string, name:string}[]>([])
+    const [faculties, setFaculties] = React.useState<{ id: string, name: string }[]>([])
     const {
         selected,
         setSelected
     } = useFilterStore();
-    React.useEffect(()=>{
+    React.useEffect(() => {
         client.query({
-    fetchPolicy: "no-cache",
+            fetchPolicy: "no-cache",
+
             query: gql`query FindManyFaculty {
                 findManyFaculty {
                   id
                   name
                 }
               }`
-        }).then(({data}) => setFaculties(data.findManyFaculty))
-    },[])
+        }).then(({ data }) => setFaculties(data.findManyFaculty))
+    }, [])
 
     const handleToggle = (value: number) => () => {
         const currentIndex = selected.indexOf(value);
@@ -58,18 +59,22 @@ export default function CheckboxList() {
                     p: 2,
                     fontWeight: "bold",
                 }}>
-                Faculty Filter
+                Expertise Filter
             </Typography>
 
             <Divider />
             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                {faculties?.map((faculty) => {
+                {[{
+                    id: 1,
+                    name: "Computer Vision",
+
+                }]?.map((faculty) => {
                     const labelId = `checkbox-list-label-${faculty.id}` as string;
 
                     return (
                         <ListItem
                             key={faculty.id}
-                        
+
                             disablePadding
                         >
                             <ListItemButton role={undefined} onClick={handleToggle(Number(faculty.id))} dense>

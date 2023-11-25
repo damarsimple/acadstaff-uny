@@ -2,8 +2,28 @@
 import { Box, Button, Divider, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
 
-export default function BottomProfileInfo() {
-  const [selectedTab, setSelectedTab] = useState("Profile");
+enum Tab {
+  Profile = "Profile",
+  CourseAndSupervision = "Course & Supervision",
+  GrantAndProject = "Grant & Project",
+  Research = "Research",
+  CommunityServices = "Community Services",
+  IntellectualProperty = "Intellectual Property/Patent",
+  Publication = "Publication",
+}
+const tabs = [
+  "Profile",
+  "Course & Supervision",
+  "Grant & Project",
+  "Research",
+  "Community Services",
+  "Intellectual Property/Patent",
+  "Publication",
+] as Tab[];
+
+
+export default function BottomProfileInfo({staff} : {staff: any}) {
+  const [selectedTab, setSelectedTab] = useState<Tab>(Tab.Profile);
   return (
     <Box
       sx={{
@@ -17,28 +37,26 @@ export default function BottomProfileInfo() {
           display: "flex",
           gap: 1,
           p: 2,
+          overflow: "scroll",
+
         }}
       >
-        {[
-          "Profile",
-          "Course & Supervision",
-          "Grant & Project",
-          "Research",
-          "Community Services",
-          "Intellectual Property/Patent",
-          "Publication",
-        ].map((tab) => (
+        {tabs.map((tab) => (
           <Button
             onClick={() => setSelectedTab(tab)}
             key={tab}
             variant={selectedTab == tab ? "contained" : "text"}
+            sx={{
+              minWidth: 200
+            }}
+            size="small"
           >
             {tab}
           </Button>
         ))}
       </Paper>
 
-      {selectedTab == "Profile" && (
+      {selectedTab == Tab.Profile && (
         <>
           <Paper
             sx={{
@@ -46,68 +64,162 @@ export default function BottomProfileInfo() {
             }}
           >
             <Typography variant="body1">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Dignissimos eaque rem possimus officia porro minus, quasi id
-              aperiam pariatur placeat repudiandae, maiores ipsa? Id nihil hic
-              tempore sapiente, reprehenderit aperiam corporis corrupti pariatur
-              odio atque excepturi provident, illum alias, maxime quidem! Et
-              eaque sapiente deleniti dolor accusamus minus animi officiis culpa
-              expedita, obcaecati suscipit optio, beatae asperiores! Amet dolor
-              assumenda quos sequi eum sunt odio esse, dolores unde minima
-              blanditiis voluptatibus maxime reprehenderit velit autem dolorum
-              quis. Libero iusto, quaerat facere, mollitia nisi cumque quos quam
-              necessitatibus suscipit accusamus totam sit distinctio modi, magni
-              corporis? Sint ab repellendus delectus deserunt.
+              {staff?.description ?? "No description"}
             </Typography>
           </Paper>
-          <Paper
-            sx={{
-              p: 2,
-            }}
-          >
-            <Typography variant="h6" color="primary">
-              AREA OF EXPERTISE (DIVISION / GROUP / FIELD)
-            </Typography>
 
-            <Divider />
+          <SectionData
+            title="AREA OF EXPERTISE (DIVISION / GROUP / FIELD)"
+            data={staff?.expertise?.split(",") ?? ["No expertise listed"]}
+          />
+           <SectionData
+            title="EDUCATION BACKGROUND"
+            data={staff?.educations ?? ["No education listed"]}
+          />
+          <SectionData
+            title="RESEARCH INTEREST"
+            data={[
+              "Energy Law ( Renewable Energy ), International Maritime Law, International Trade Law"
+            ]}
+          />
+        </>
+      )}
 
-            <Typography variant="body1">RESEARCH INTEREST</Typography>
-          </Paper>
-          <Paper
-            sx={{
-              p: 2,
-            }}
-          >
-            <Typography variant="h6" color="primary">
-              RESEARCH INTEREST
-            </Typography>
+      {selectedTab == Tab.CourseAndSupervision && (
+        <>
 
-            <Divider />
+          <SectionData
+            title="Course"
+            data={[
+              "3 SKS - Hukum Energi Terbarukan (S1) - 2021/2022 - Semester Ganjil",
+              "3 SKS - Hukum Energi Terbarukan (S1) - 2020/2021 - Semester Ganjil",
+            ]}
+          />
 
-            <Typography variant="body1">
-              Energy Law ( Renewable Energy ), International Maritime Law,
-              International Trade Law
-            </Typography>
-          </Paper>
-          <Paper
-            sx={{
-              p: 2,
-            }}
-          >
-            <Typography variant="h6" color="primary">
-              AREA OF EXPERTISE (DIVISION / GROUP / FIELD)
-            </Typography>
+          <SectionData
+            title="Supervision"
+            data={[
+              "2020/2021 - Semester Ganjil - 1 Mahasiswa",
+              "2021/2022 - Semester Ganjil - 1 Mahasiswa",
+            ]}
+          />
 
-            <Divider />
+        </>
+      )}
 
-            <Typography variant="body1">
-              PELATIHAN TEKNIS TECHNO-ECONOMIC ASSESSMENT ENERGI BARU TERBARUKAN
-              DALAM MENDUKUNG PERCEPATAN TRANSISI ENERGI DAN PENGEMBANGAN , Luar
-              Universitas/eksternal (lembaga kredible) , Date : 2023-07-05{" "}
-            </Typography>
-          </Paper>
+      {selectedTab == Tab.GrantAndProject && (
+        <>
+
+          <SectionData
+            title="Grant"
+            data={[
+              "Peer Assessment of Research Proposal for Research Grant, Universitas Gadjah Mada, 2021",
+
+            ]}
+          />
+
+          <SectionData
+            title="Project"
+            data={[
+              "Pengembangan Sistem Informasi Pelayanan Hukum Berbasis Teknologi Informasi dan Komunikasi (Tik) di Lingkungan Universitas Gadjah Mada, Universitas Gadjah Mada, 2021",
+              "Collaborative Research on the Development of a Legal Framework for the Implementation of the ASEAN Single Window (ASW) in Indonesia, Universitas Gadjah Mada, 2021",
+            ]}
+          />
+
+        </>
+      )}
+      {selectedTab == Tab.Research && (
+        <>
+
+          <SectionData
+            title="Research"
+            data={[
+              "Data Protection in the Digital Era: A Comparative Study of Indonesia and the European Union, Universitas Gadjah Mada, 2021",
+              "Dampak Hukum Penggunaan Teknologi Blockchain dalam Transaksi Bisnis, Universitas Gadjah Mada, 2021",
+
+            ]}
+          />
+
+
+        </>
+      )}
+      {selectedTab == Tab.CommunityServices && (
+        <>
+
+          <SectionData
+            title="Research"
+            data={[
+              "Community Service on the Development of a Legal Framework for the Implementation of the ASEAN Single Window (ASW) in Indonesia, Universitas Gadjah Mada, 2021",
+              "Lembaga Penelitian dan Pengabdian kepada Masyarakat (LPPM) UGM, Universitas Gadjah Mada, 2021",
+
+            ]}
+          />
+
+
+        </>
+      )}
+
+      {selectedTab == Tab.IntellectualProperty && (
+        <>
+
+          <SectionData
+            title="Research"
+            data={[
+
+              "Hak Kekayaan Intelektual dalam Transaksi Bisnis, Universitas Gadjah Mada, 2021",
+
+            ]}
+          />
+
+
+        </>
+      )}
+      {selectedTab == Tab.Publication && (
+        <>
+
+          <SectionData
+            title="Publication"
+            data={[
+
+              "Jurnal Ilmiah Nasional Terakreditasi Peringkat 2, Universitas Gadjah Mada, 2021",
+
+
+            ]}
+          />
+
+
         </>
       )}
     </Box>
   );
+}
+
+
+interface SectionDataProps {
+  title: string;
+  data: string[];
+}
+
+export const SectionData = ({ title,
+  data }: SectionDataProps) => {
+  return <Paper
+    sx={{
+      p: 2,
+      display: "flex",
+      gap: 2,
+      flexDirection: "column"
+    }}
+  >
+    <Typography variant="h6" color="primary" textTransform={"uppercase"}>
+      {title}
+    </Typography>
+
+    <Divider />
+
+    {
+      data.map((d, i) => <Typography key={i} variant="body1">
+        {d}
+      </Typography>)
+    }
+  </Paper>
 }

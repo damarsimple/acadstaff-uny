@@ -3,6 +3,7 @@
 import { Typography, Grid, Card, Avatar, CardContent, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import CheckboxList from './FilterList';
+import ExpertiseList from './ExpertiseList';
 import SearchProfile from '@/SearchProfile';
 import client from '@/Client';
 import useFilterStore from '@/stores/filter';
@@ -19,7 +20,6 @@ export default function UserProfileGrid() {
     const [count, setCount] = useState(0);
     const { selected, search, setSearch, setSelected } = useFilterStore();
 
-
     useEffect(() => {
         client.query({
             query: gql`query FindManyAcademicStaff($take:Int, $skip:Int, $where: AcademicStaffWhereInput) {
@@ -29,7 +29,6 @@ export default function UserProfileGrid() {
                   _count {
                     certifications
                     courses
-                    educations
                     researchInterests
                     researchClusters
                     researches
@@ -47,7 +46,7 @@ export default function UserProfileGrid() {
                 }
               }`,
             variables: {
-                "take": 20,
+                "take": 21,
                 "skip": 0,
                 "where": {
                     "name": search.length != 0 ? {
@@ -96,69 +95,71 @@ export default function UserProfileGrid() {
                     <Grid container spacing={1}>
                         {staffs.map((user, index) => (
                             <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
-                                <Card
-                                    onClick={() => {
-                                        window.location.replace("/staff/" + user.email)
-                                    }}
-                                    sx={{
-                                        padding: '12px',
-                                        // hover border blue
-                                        "&:hover": {
-                                            border: "1px solid blue",
-                                            borderRadius: "12px"
-                                        },
+                                <Link href={'/staff/' + user.email}>
+                                    <Card
 
-                                        cursor: "pointer"
+                                        sx={{
+                                            padding: '12px',
+                                            // hover border blue
+                                            "&:hover": {
+                                                border: "1px solid blue",
+                                                borderRadius: "12px"
+                                            },
+
+                                            cursor: "pointer"
 
 
-                                    }}>
-                                    <Box sx={{
-                                        textAlign: 'center',
-                                        display: "flex",
-                                        alignItems: "center",
-                                        flexDirection: "column",
-                                    }}>
-                                        <Avatar alt={user.name} src={user.profile_image_url ?? "/bg.jpeg"} style={{ width: '80px', height: '80px', margin: '0 auto' }} />
-                                        <CardContent sx={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            gap: 2,
-                                            alignItems: 'center',
                                         }}>
-                                            <Typography variant="body1"
-                                                sx={{
-                                                    fontWeight: "bold"
-                                                }}
-                                            >{user.name}</Typography>
-                                            <Typography variant="caption">{user.faculty.name}</Typography>
+                                        <Box sx={{
+                                            textAlign: 'center',
+                                            display: "flex",
+                                            alignItems: "center",
+                                            flexDirection: "column",
+                                        }}>
+                                            <Avatar alt={user.name} src={user.profile_image_url ?? "/bg.jpeg"} style={{ width: '80px', height: '80px', margin: '0 auto' }} />
+                                            <CardContent sx={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                gap: 2,
+                                                alignItems: 'center',
+                                            }}>
+                                                <Typography variant="body1"
+                                                    sx={{
+                                                        fontWeight: "bold"
+                                                    }}
+                                                >{user.name}</Typography>
+                                                <Typography variant="caption">{user.faculty.name}</Typography>
 
-                                        </CardContent>
-                                    </Box>
-                                    <Grid container spacing={1} sx={{
-                                        // items center
+                                            </CardContent>
+                                        </Box>
+                                        <Grid container spacing={1} sx={{
+                                            // items center
 
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        textAlign: 'center',
-                                    }}>
-                                        <Grid item xs={6}>
-                                            <Typography variant="body2">{user._count.researches} Penelitian</Typography>
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            textAlign: 'center',
+                                        }}>
+                                            <Grid item xs={6}>
+                                                <Typography variant="body2">{user._count.researches} Penelitian</Typography>
 
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <Typography variant="body2">{user._count.courses} Course</Typography>
+                                            </Grid>
+
+                                            <Grid item xs={6}>
+                                                <Typography variant="body2">{user._count.certifications} Sertifikasi</Typography>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={6}>
-                                            <Typography variant="body2">{user._count.courses} Course</Typography>
-                                        </Grid>
-
-                                        <Grid item xs={6}>
-                                            <Typography variant="body2">{user._count.certifications} Sertifikasi</Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Card>
+                                    </Card>
+                                </Link>
                             </Grid>
                         ))}
                     </Grid>
                 </Grid>
                 <Grid xs={4} item >
+                    <ExpertiseList />
+                    <Box mt={2} />
                     <CheckboxList />
                 </Grid>
             </Grid>
