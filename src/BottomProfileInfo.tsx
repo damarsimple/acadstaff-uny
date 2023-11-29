@@ -163,6 +163,7 @@ export default function BottomProfileInfo({ staff }: { staff: Staff }) {
             },
           ].map((e) => (
             <SectionData
+            key={e.title}
               title={e.title}
               data={[
                 {
