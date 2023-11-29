@@ -28,111 +28,282 @@ import { useParams } from "next/navigation";
 import React from "react";
 import QRCode from "react-qr-code";
 
-
 type Props = {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
-}
- 
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
 export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const id = params.id
+  const id = params.id;
   const staff = await getStaffData(params.id);
- 
+
   return {
-    title:  `${staff.name} | ${staff.faculty.name} | Universitas Negeri Yogyakarta`,
-    description: staff.description ?? "Discover the dedicated faculty of Universitas Negeri Yogyakarta. Explore profiles, research interests, academic achievements, and ways to connect with our academic staff.",
-    keywords : "Universitas Negeri Yogyakarta Faculty, Academic Staff Profiles, Faculty Research Interests, Academic Publications, Educational Expertise, Faculty Contact Information, Research and Scholarly Work, Academic Certifications and Courses",
+    title: `${staff.data.sdm_nama} | ${staff.data.fu_nama} | Universitas Negeri Yogyakarta`,
+    description:
+      // staff.description ??
+      "Discover the dedicated faculty of Universitas Negeri Yogyakarta. Explore profiles, research interests, academic achievements, and ways to connect with our academic staff.",
+    keywords:
+      "Universitas Negeri Yogyakarta Faculty, Academic Staff Profiles, Faculty Research Interests, Academic Publications, Educational Expertise, Faculty Contact Information, Research and Scholarly Work, Academic Certifications and Courses",
     robots: "index, follow",
 
     openGraph: {
-      images: [staff.profile_image_url],
+      images: [staff.data.sdm_foto_file],
       type: "profile",
     },
-  
-  }
+  };
 }
- 
+
+interface Detasering {
+  total_document: number;
+}
+
+interface Haki {
+  total_document: number;
+}
+
+interface Penelitian {
+  total_document: number;
+}
+
+interface Pengabdian {
+  total_document: number;
+}
+
+interface Publikasi {
+  total_document: number;
+}
+
+interface Copyright {
+  edisi: string;
+  halaman: string;
+  asal_data: string;
+  doi: string;
+  e_issn: string;
+  isbn: string;
+  issn: string;
+  jenis_publikasi: string;
+  judul: string;
+  judul_artikel: string | null;
+  jumlah_halaman: string;
+  judul_asli: string | null;
+  kategori_capaian_luaran: string;
+  keterangan: string;
+  kategori_kegiatan: string;
+  nama_jurnal: string;
+  nomor_paten: string;
+  nomor: string;
+  pemberi_paten: string;
+  penerbit: string;
+  prosiding: string;
+  seminar: string;
+  tanggal: string;
+  tautan: string | null;
+  volume: string;
+}
+
+interface StaffData {
+  fu_nama: string;
+  ba_nama: string;
+  detasering: Detasering;
+  fu_ak: string;
+  go_nama: string;
+  go_pangkat: string;
+  gr_nama: string;
+  haki: Haki;
+  pe_nama: string;
+  penelitian: Penelitian;
+  pengabdian: Pengabdian;
+  rwykep_gr_id: string;
+  publikasi: Publikasi;
+  rwykep_nip: string;
+  rwykep_st_id: string;
+  rwykep_sta_id: string;
+  rwype_sb_nama: string;
+  rwyuk_ba_id: string;
+  rwype_se_ket: string;
+  rwyuk_sb_id: string | null;
+  rwyuk_se_id: string;
+  rwyuk_un_id: string;
+  sb_nama: string | null;
+  sdm_foto_file: string;
+  sdm_id: string;
+  sdm_nama: string;
+  sdm_tgllahir: string;
+  sdm_tmplahir: string;
+  sdmk_emailuny: string;
+  se_ket: string;
+  sta_nama: string;
+  st_nama: string;
+  se_nama: string;
+  un_ket: string;
+  un_nama: string;
+}
+
+export interface Staff {
+  data: StaffData;
+  copyrights: Copyright[];
+  communityServices: any[]; // Specify the type if the structure is known
+  publications: any[]; // Specify the type if the structure is known
+  researches: any[]; // Specify the type if the structure is known
+}
+
+interface RootObject {
+    staff: Staff;
+}
+
 async function getStaffData(email: string) {
   "use server";
   try {
-
-    const { data } = await client.query({
+    const { data } = await client.query<RootObject>({
       query: gql`
-      query FindUniqueAcademicStaff($where: AcademicStaffWhereUniqueInput!) {
-        findUniqueAcademicStaff(where: $where) {
-          id
-          name
-          photo
-          description
-          physical_address
-          expertise
-          position
-          educations
-          profile_image_url
-          status
-          unit
-          website
-          researchClusters {
-            id
-            name
-            description
-          }
-          researchInterests {
-            name
-            id
-          }
-          researches {
-            id
-            role
-          }
-          scholarships {
-            link_url
-            id
-            name
-            description
-          }
-          group
-          faculty {
-            id
-            name
-          }
-          externalKey
-          expertise
-          email
-          dob
-          description
-    
-          courses {
-            id
-            name
-          }
-          contactMethods {
-            id
-            link_url
-            type
-          }
-          certifications {
-            id
-            name
-            description
+        query Staffs($staffId: String) {
+          staff(id: $staffId) {
+            data {
+              fu_nama
+              ba_nama
+              detasering {
+                total_document
+              }
+              fu_ak
+              go_nama
+              go_pangkat
+              gr_nama
+              haki {
+                total_document
+              }
+              pe_nama
+              penelitian {
+                total_document
+              }
+              pengabdian {
+                total_document
+              }
+              rwykep_gr_id
+              publikasi {
+                total_document
+              }
+              rwykep_nip
+              rwykep_st_id
+              rwykep_sta_id
+              rwype_sb_nama
+              rwyuk_ba_id
+              rwype_se_ket
+              rwyuk_sb_id
+              rwyuk_se_id
+              rwyuk_un_id
+              sb_nama
+              sdm_foto_file
+              sdm_id
+              sdm_nama
+              sdm_tgllahir
+              sdm_tmplahir
+              sdmk_emailuny
+              se_ket
+              sta_nama
+              st_nama
+              se_nama
+              un_ket
+              un_nama
+            }
+            copyrights {
+              edisi
+              halaman
+              doi
+              e_issn
+              isbn
+              issn
+              jenis_publikasi
+              judul
+              judul_artikel
+              jumlah_halaman
+              judul_asli
+              kategori_capaian_luaran
+              keterangan
+              kategori_kegiatan
+              nama_jurnal
+              nomor_paten
+              nomor
+              pemberi_paten
+              penerbit
+              prosiding
+              seminar
+              tanggal
+              tautan
+              volume
+            }
+            communityServices {
+              afiliasi
+              jenis_skim
+              judul
+              kelompok_bidang
+              lokasi
+              sispeng_insert_at
+              sispeng_update_at
+              sk_penugasan
+              tahun_kegiatan
+              tahun_pelaksanaan
+              tahun_pelaksanaan_ke
+              tahun_usulan
+              tanggal_sk_penugasan
+            }
+            publications {
+              e_issn
+              doi
+              asal_data
+              edisi
+              halaman
+              isbn
+              issn
+              jenis_publikasi
+              judul
+              judul_artikel
+              judul_asli
+              jumlah_halaman
+              kategori_capaian_luaran
+              kategori_kegiatan
+              keterangan
+              nama_jurnal
+              nomor
+              nomor_paten
+              pemberi_paten
+              penerbit
+              prosiding
+              seminar
+              tanggal
+              volume
+              tautan
+            }
+            researches {
+              lokasi
+              judul
+              afiliasi
+              jenis_skim
+              kelompok_bidang
+              sispen_insert_at
+              sispen_update_at
+              sk_penugasan
+              tahun_kegiatan
+              tahun_pelaksanaan
+              tahun_pelaksanaan_ke
+              tahun_usulan
+              tanggal_sk_penugasan
+            }
           }
         }
-      }
-    `,
-  fetchPolicy: "no-cache",
+      `,
+      fetchPolicy: "no-cache",
       variables: {
-        where: {
-          email: decodeURIComponent(email),
-        },
+          staffId: decodeURIComponent(email),
       },
-    });
-    return data.findUniqueAcademicStaff;
+    })
+    return data.staff;
   } catch (error) {
-    console.log(error);
+    //@ts-ignore
+    console.error(error);
     throw error;
   }
 }
@@ -209,17 +380,17 @@ export default async function Page({ params }: any) {
             // justifyContent: "center",
             alignItems: {
               xs: "center",
-              small: "normal"
+              small: "normal",
             },
             flexDirection: {
               sm: "row",
-              xs: "column"
+              xs: "column",
             },
             gap: 2,
           }}
         >
           <Avatar
-            src={staff.profile_image_url ?? "/bg.jpeg"}
+            src={staff.data.sdm_foto_file ?? "/bg.jpeg"}
             sx={{
               width: 160,
               height: 160,
@@ -233,12 +404,14 @@ export default async function Page({ params }: any) {
               width: {
                 xs: "100%",
                 sm: "70%",
-              }
+              },
             }}
           >
-            <Typography variant="h6" component="h1">{staff.name}</Typography>
+            <Typography variant="h6" component="h1">
+              {staff.data.sdm_nama}
+            </Typography>
             <Typography variant="caption">
-              {staff.group}/{staff.expertise}
+              {staff.data.un_ket}
             </Typography>
             <Box mt={2} />
             <Box
@@ -249,9 +422,9 @@ export default async function Page({ params }: any) {
               }}
             >
               <LocalPostOffice />
-              <Typography>{staff.faculty.name}</Typography>
+              <Typography>{staff.data.un_ket}</Typography>
             </Box>
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -259,7 +432,7 @@ export default async function Page({ params }: any) {
               }}
             >
               <Place />
-              <Typography>{staff.pyshical_address}</Typography>
+              <Typography>Address</Typography>
             </Box>
             <Box
               sx={{
@@ -270,7 +443,7 @@ export default async function Page({ params }: any) {
             >
               <LinkOutlined />
               <Typography>www.com</Typography>
-            </Box>
+            </Box> */}
             <Box
               sx={{
                 display: "flex",
@@ -279,7 +452,7 @@ export default async function Page({ params }: any) {
               }}
             >
               <EmailSharp />
-              <Typography>{staff.email}</Typography>
+              <Typography>{staff.data.sdmk_emailuny}</Typography>
             </Box>
           </Box>
 
@@ -293,10 +466,8 @@ export default async function Page({ params }: any) {
               gap: 2,
               width: "30%",
               alignItems: "center",
-
             }}
           >
-
             <QRCode
               size={256}
               style={{ height: 100, maxWidth: "100%", width: "100%" }}
@@ -343,9 +514,7 @@ export default async function Page({ params }: any) {
           </Box>
         </Paper>
         <Box mt={4} />
-        <BottomProfileInfo
-          staff={staff}
-        />
+        <BottomProfileInfo staff={staff} />
       </Container>
     </Box>
   );

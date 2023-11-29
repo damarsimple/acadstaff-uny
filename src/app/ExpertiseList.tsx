@@ -12,30 +12,18 @@ import { Divider, Paper, Typography } from '@mui/material';
 import { gql, useQuery } from '@apollo/client';
 import client from '@/Client';
 import useFilterStore from '@/stores/filter';
+import { faculties } from '@/type';
 
 
 
 
 export default function CheckboxList() {
 
-    const [faculties, setFaculties] = React.useState<{ id: string, name: string }[]>([])
     const {
         selected,
         setSelected
     } = useFilterStore();
-    React.useEffect(() => {
-        client.query({
-            fetchPolicy: "no-cache",
-
-            query: gql`query FindManyFaculty {
-                findManyFaculty {
-                  id
-                  name
-                }
-              }`
-        }).then(({ data }) => setFaculties(data.findManyFaculty))
-    }, [])
-
+  
     const handleToggle = (value: number) => () => {
         const currentIndex = selected.indexOf(value);
         const newChecked = [...selected];
@@ -64,11 +52,7 @@ export default function CheckboxList() {
 
             <Divider />
             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                {[{
-                    id: 1,
-                    name: "Computer Vision",
-
-                }]?.map((faculty) => {
+                {faculties?.map((faculty) => {
                     const labelId = `checkbox-list-label-${faculty.id}` as string;
 
                     return (
