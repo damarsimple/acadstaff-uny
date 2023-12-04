@@ -1,16 +1,15 @@
-"use client"
+"use client";
 
-import { ThemeOptions, createTheme } from '@mui/material/styles';
+import { ThemeOptions, createTheme } from "@mui/material/styles";
 
 export const themeOptions: ThemeOptions = createTheme({
   palette: {
-    mode: 'light',
+    mode: "light",
     primary: {
-      main: '#41368e',
+      main: "#0B4784",
     },
     secondary: {
-      main: '#f50057',
+      main: "#f50057",
     },
   },
-})
-
+});

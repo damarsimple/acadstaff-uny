@@ -1,13 +1,15 @@
 import Image from "next/image";
 import {
   Box,
-  Button,
+  // Button,
   Typography,
   styled,
   alpha,
   InputBase,
   Grid,
 } from "@mui/material";
+import Button from "@mui/material/Button";
+
 import SearchHome from "./SearchHome";
 import client from "@/Client";
 import { gql } from "@apollo/client";
@@ -31,7 +33,6 @@ export const metadata: Metadata = {
 };
 
 async function getFacultiesData() {
-
   return faculties;
 }
 
@@ -55,7 +56,12 @@ export default async function Home() {
       }}
     >
       <Box sx={{ mt: 4 }} />
-      <Image src="/logo-uny.png" width="180" height="180" alt="logo-uny" />
+      <Image
+        src="/logo UNY-White 1.png"
+        width="180"
+        height="180"
+        alt="logo-uny"
+      />
 
       <Typography
         color={"white"}
@@ -87,7 +93,7 @@ export default async function Home() {
           {data?.map((fac) => {
             return (
               <Link key={fac.id} href={"/search?faculty_id=" + fac.id}>
-                <Button sx={{ m: 1, color: "white" }} variant="text">
+                <Button sx={{ m: 1, color: "white" }} variant="outlined">
                   {fac.name}
                 </Button>
               </Link>
